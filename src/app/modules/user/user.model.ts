@@ -43,9 +43,8 @@ const userSchema = new Schema<TUser, userModel>({
 );
 
 userSchema.pre('save', async function (next) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const user = this; // doc
-    // hashing password and save into DB
+    
+    const user = this; 
   
     user.password = await bcrypt.hash(
       user.password,
