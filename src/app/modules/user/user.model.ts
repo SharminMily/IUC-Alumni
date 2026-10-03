@@ -1,60 +1,62 @@
-import { model, Schema } from "mongoose";
-import { TUser, userModel } from "./user.interface";
+import { model, Schema } from 'mongoose';
+import { TUser, userModel } from './user.interface';
 import bcrypt from 'bcrypt';
-import config from "../../config";
-import { UserStatus } from "./user.constant";
-const userSchema = new Schema<TUser, userModel>({
+import config from '../../config';
+import { UserStatus } from './user.constant';
+
+const userSchema = new Schema<TUser, userModel>(
+  {
     id: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true,
-        select: 0
+      type: String,
+      required: true,
+      select: 0,
     },
     needsPasswordChange: {
-        type: Boolean,
-        default: true,
+      type: Boolean,
+      default: true,
+    },
+    passwordChangedAt: {
+      type: Date,
     },
     role: {
-        type: String,
-       enum : ['admin' , 'student' , 'faculty'],
+      type: String,
+      enum: ['admin', 'student', 'faculty', 'alumni'],
+      required: true,
     },
     status: {
-        type: String,
-       enum : UserStatus,
-       default: 'in-progress'
+      type: String,
+      enum: UserStatus,
+      default: 'in-progress',
     },
     isDeleted: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
-},
-{
-    timestamps: true
-},
+  },
+  {
+    timestamps: true,
+  },
 );
 
 userSchema.pre('save', async function (next) {
-    
-    const user = this; 
-  
-    user.password = await bcrypt.hash(
-      user.password,
-      Number(config.bcrypt_salt_rounds),
-    );
-  
-    next();
-  });
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
 
- // set '' after saving password
 userSchema.post('save', function (doc, next) {
   doc.password = '';
   next();
@@ -79,6 +81,5 @@ userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
     new Date(passwordChangedTimestamp).getTime() / 1000;
   return passwordChangedTime > jwtIssuedTimestamp;
 };
-  
 
-export const  User = model<TUser, userModel>('User', userSchema)
+export const User = model<TUser, userModel>('User', userSchema);

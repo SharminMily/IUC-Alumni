@@ -22,7 +22,7 @@ import {
   
   export const AcademicSemesterName: TAcademicSemesterName[] = [
     'Autumn',
-    'Summar',
+    'Summer',
     'Fall',
   ];
   
@@ -30,12 +30,12 @@ import {
   
   // export const academicSemesterNameCodeMapper: TAcademicSemesterNameCodeMapper = {
   //   Autumn: '01',
-  //   Summar: '02',
+  //   Summer: '02',
   //   Fall: '03',
   // };
   
  export const academicSemesterNameCodeMapper : TAcademicSemesterNameCodeMapper  = {
     Autumn: '01',
-    Summar: '02',
+    Summer: '02',
     Fall: '03',
   };
