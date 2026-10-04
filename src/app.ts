@@ -16,6 +16,7 @@ import { offeredCourseRoutes } from './app/modules/OfferedCourse/OfferedCourse.r
 import { authRoutes } from './app/modules/Auth/auth.route';
 import cookieParser  from'cookie-parser'
 import { AlumniRoutes } from './app/modules/alumni/alumni.route';
+import { JobRoutes } from './app/modules/job/job.route';
 
 
 const app: Application = express();
@@ -30,6 +31,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/students', StudentRoute);
 app.use('/api/v1/users', UserRoute);
 app.use('/api/v1/admins', AdminRoutes);
+app.use('/api/v1/alumni', AlumniRoutes);
 
 app.use('/api/v1/academic-semsters', AcademicSemesterRoutes);
 app.use('/api/v1/academic-facultys', AcademicFacultyRoutes);
@@ -40,7 +42,8 @@ app.use('/api/v1/courses', CourseRoutes);
 app.use('/api/v1/semester-registration', semesterRegistrationRoutes);
 app.use('/api/v1/offered-courses', offeredCourseRoutes);
 
-app.use('/api/v1/alumni', AlumniRoutes);
+// v2 routes
+app.use('/api/v2/jobs', JobRoutes);
 
 const getAController = (req: Request, res: Response) => {
   const a = 10;
