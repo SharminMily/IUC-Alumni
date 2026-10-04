@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Days } from "./OfferedCourse.constant";
 
+
 const timeStringSchema = z.string().refine(
     (time) => {
       const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/; // 00-09 10-19 20-23

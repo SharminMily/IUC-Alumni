@@ -1,14 +1,15 @@
-
-import { model, Schema } from 'mongoose';
-import { TCourse, TCoursefaculty, TPreRequisiteCourses } from './course.interface';
-
-
+import { model, models, Schema } from 'mongoose';
+import {
+  TCourse,
+  TCoursefaculty,
+  TPreRequisiteCourses,
+} from './course.interface';
 
 const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>(
   {
     course: {
       type: Schema.Types.ObjectId,
-      ref : 'Course',
+      ref: 'Course',
     },
     isDeleted: {
       type: Boolean,
@@ -35,12 +36,10 @@ const courseSchema = new Schema<TCourse>(
     },
     code: {
       type: Number,
-      trim: true,
       required: true,
     },
     credits: {
       type: Number,
-      trim: true,
       required: true,
     },
     preRequisiteCourses: [preRequisiteCoursesSchema],
@@ -54,7 +53,8 @@ const courseSchema = new Schema<TCourse>(
   },
 );
 
-export const Course = model<TCourse>('Course', courseSchema);
+// ✅ Fix: overwrite error এড়াতে
+export const Course = models.Course || model<TCourse>('Course', courseSchema);
 
 const courseFacultySchema = new Schema<TCoursefaculty>({
   course: {
@@ -70,7 +70,7 @@ const courseFacultySchema = new Schema<TCoursefaculty>({
   ],
 });
 
-export const CourseFaculty = model<TCoursefaculty>(
-  'CourseFaculty',
-  courseFacultySchema,
-);
+// ✅ Fix: overwrite error এড়াতে
+export const CourseFaculty =
+  models.CourseFaculty ||
+  model<TCoursefaculty>('CourseFaculty', courseFacultySchema);

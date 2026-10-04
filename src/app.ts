@@ -9,14 +9,17 @@ import { AcademicSemesterRoutes } from './app/modules/academicSemester/academicS
 import { AcademicFacultyRoutes } from './app/modules/academicFaculty/academicFaculty.route';
 import { AcademicDepartmentRoutes } from './app/modules/academicDepartment/academicDepartment.route';
 import { FacultyRoutes } from './app/modules/faculty/faculty.route';
-import { CourseRoutes } from './app/modules/Course/course.route';
+import { CourseRoutes } from './app/modules/course/course.route';
 import { semesterRegistrationRoutes } from './app/modules/semesterRegistration/semesterRegistration.route';
 import { AdminRoutes } from './app/modules/Admin/admin.route';
-import { offeredCourseRoutes } from './app/modules/OfferedCourse/OfferedCourse.route';
+
 import { authRoutes } from './app/modules/Auth/auth.route';
 import cookieParser  from'cookie-parser'
 import { AlumniRoutes } from './app/modules/alumni/alumni.route';
 import { JobRoutes } from './app/modules/job/job.route';
+import { EventRoutes } from './app/modules/event/event.route';
+import { offeredCourseRoutes } from './app/modules/offeredCourse/offeredCourse.route';
+
 
 
 const app: Application = express();
@@ -44,6 +47,7 @@ app.use('/api/v1/offered-courses', offeredCourseRoutes);
 
 // v2 routes
 app.use('/api/v2/jobs', JobRoutes);
+app.use('/api/v2/events', EventRoutes);
 
 const getAController = (req: Request, res: Response) => {
   const a = 10;
