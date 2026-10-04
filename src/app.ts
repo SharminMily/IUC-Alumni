@@ -15,6 +15,7 @@ import { AdminRoutes } from './app/modules/Admin/admin.route';
 import { offeredCourseRoutes } from './app/modules/OfferedCourse/OfferedCourse.route';
 import { authRoutes } from './app/modules/Auth/auth.route';
 import cookieParser  from'cookie-parser'
+import { AlumniRoutes } from './app/modules/alumni/alumni.route';
 
 
 const app: Application = express();
@@ -38,6 +39,8 @@ app.use('/api/v1/facultys', FacultyRoutes);
 app.use('/api/v1/courses', CourseRoutes);
 app.use('/api/v1/semester-registration', semesterRegistrationRoutes);
 app.use('/api/v1/offered-courses', offeredCourseRoutes);
+
+app.use('/api/v1/alumni', AlumniRoutes);
 
 const getAController = (req: Request, res: Response) => {
   const a = 10;

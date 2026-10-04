@@ -19,6 +19,8 @@ import { AcademicDepartment } from '../academicDepartment/academicDepartment.mod
 import { Faculty } from '../faculty/faculty.model';
 import { TAdmin } from '../Admin/admin.interface';
 import { Admin } from '../Admin/admin.model';
+import { Alumni } from '../alumni/alumni.model';
+import { TAlumni } from '../alumni/alumni.interface';
 
 // ====================== Create Student ======================
 const createStudentIntoDB = async (password: string, payload: Student) => {
@@ -153,9 +155,10 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   }
 };
 
-// ====================== Create Alumni (NEW) ======================
-const createAlumniIntoDB = async (password: string, payload: any) => {
+// ====================== Create Alumni ======================
+const createAlumniIntoDB = async (password: string, payload: TAlumni) => {
   const userData: Partial<TUser> = {};
+
   userData.password = password || (config.default_password as string);
   userData.role = 'alumni';
   userData.email = payload.email;
@@ -164,29 +167,38 @@ const createAlumniIntoDB = async (password: string, payload: any) => {
 
   try {
     session.startTransaction();
+
+    // generate alumni id → AL-0001
     userData.id = await generateAlumniId();
 
+    // create user (transaction-1)
     const newUser = await User.create([userData], { session });
 
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
 
-    // Alumni-এর জন্য আলাদা Alumni collection চাইলে এখানে তৈরি করো
-    // এখন শুধু User তৈরি হচ্ছে
-    // পরে Alumni model বানালে এখানে transaction দিয়ে তৈরি করবে
+    // set id & user reference
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id;
+
+    // create alumni (transaction-2)
+    const newAlumni = await Alumni.create([payload], { session });
+
+    if (!newAlumni.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create alumni');
+    }
 
     await session.commitTransaction();
     await session.endSession();
 
-    return newUser[0];
+    return newAlumni;
   } catch (err: any) {
     await session.abortTransaction();
     await session.endSession();
     throw new Error(err);
   }
 };
-
 // ====================== Get Me ======================
 const getMe = async (userId: string, role: string) => {
   let result = null;
@@ -201,9 +213,8 @@ const getMe = async (userId: string, role: string) => {
     result = await Faculty.findOne({ id: userId }).populate('user');
   }
   if (role === 'alumni') {
-    // Alumni model না থাকলে শুধু User থেকে রিটার্ন করো
-    result = await User.findOne({ id: userId });
-  }
+  result = await Alumni.findOne({ id: userId }).populate('user');
+}
 
   return result;
 };
