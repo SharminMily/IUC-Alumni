@@ -53,7 +53,7 @@ const courseSchema = new Schema<TCourse>(
   },
 );
 
-// ✅ Fix: overwrite error এড়াতে
+
 export const Course = models.Course || model<TCourse>('Course', courseSchema);
 
 const courseFacultySchema = new Schema<TCoursefaculty>({
@@ -70,7 +70,7 @@ const courseFacultySchema = new Schema<TCoursefaculty>({
   ],
 });
 
-// ✅ Fix: overwrite error এড়াতে
+
 export const CourseFaculty =
   models.CourseFaculty ||
   model<TCoursefaculty>('CourseFaculty', courseFacultySchema);

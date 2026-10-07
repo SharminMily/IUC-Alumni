@@ -19,8 +19,9 @@ import { AlumniRoutes } from './app/modules/alumni/alumni.route';
 import { JobRoutes } from './app/modules/job/job.route';
 import { EventRoutes } from './app/modules/event/event.route';
 import { offeredCourseRoutes } from './app/modules/offeredCourse/offeredCourse.route';
-
-
+import { PostRoutes } from './app/modules/post/post.route';
+import { NotificationRoutes } from './app/modules/notification/notification.route';
+import { MentorshipRoutes } from './app/modules/mentorship/mentorship.route';
 
 const app: Application = express();
 
@@ -29,36 +30,41 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors({origin: ['http://localhost:5173/api/v1']}));
 
-//application route
+//application route  
+//// v1 routes
+app.use('/api/v1/users', UserRoute);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/students', StudentRoute);
-app.use('/api/v1/users', UserRoute);
 app.use('/api/v1/admins', AdminRoutes);
 app.use('/api/v1/alumni', AlumniRoutes);
 
 app.use('/api/v1/academic-semsters', AcademicSemesterRoutes);
+app.use('/api/v1/facultys', FacultyRoutes);
 app.use('/api/v1/academic-facultys', AcademicFacultyRoutes);
 app.use('/api/v1/academic-departments', AcademicDepartmentRoutes);
-app.use('/api/v1/facultys', FacultyRoutes);
+app.use('/api/v1/semester-registration', semesterRegistrationRoutes);
 
 app.use('/api/v1/courses', CourseRoutes);
-app.use('/api/v1/semester-registration', semesterRegistrationRoutes);
 app.use('/api/v1/offered-courses', offeredCourseRoutes);
 
-// v2 routes
 app.use('/api/v2/jobs', JobRoutes);
 app.use('/api/v2/events', EventRoutes);
+app.use('/api/v2/posts', PostRoutes);
+app.use('/api/v2/notifications', NotificationRoutes);
+app.use('/api/v2/mentorship', MentorshipRoutes);
+// app.use('/api/v1/campaigns', CampaignRoutes);
 
-const getAController = (req: Request, res: Response) => {
-  const a = 10;
+// const getAController = (req: Request, res: Response) => {
+//   const a = 10;
 
-  res.json({
-    success: true,
-    value: a,
-  });
-};
+//   res.json({
+//     success: true,
+//     value: a,
+//   });
+// };
 
-app.get('/', getAController);
+// app.get('/', getAController);
+// app.use('/api', router);
 
 app.use(globalErrorHandler);
 
