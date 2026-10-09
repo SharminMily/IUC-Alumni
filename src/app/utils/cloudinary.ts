@@ -8,4 +8,15 @@ cloudinary.config({
   api_secret: config.cloudinary_api_secret,
 });
 
+// short path - full URL
+export const getCloudinaryUrl = (publicId: string) => {
+  if (!publicId) return '';
+  // already full url hole all return
+  if (publicId.startsWith('http')) return publicId;
+
+  return cloudinary.url(publicId, {
+    secure: true,
+  });
+};
+
 export default cloudinary;

@@ -3,6 +3,8 @@ import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { Alumni } from './alumni.model';
 import { TAlumni } from './alumni.interface';
+import { Types } from 'mongoose';
+import { getCloudinaryUrl } from '../../utils/cloudinary';
 
 const getAllAlumniFromDB = async (query: Record<string, unknown>) => {
   const filter: Record<string, unknown> = { isDeleted: false };
@@ -43,13 +45,27 @@ const updateAlumniIntoDB = async (id: string, payload: Partial<TAlumni>) => {
       modifiedData[`name.${key}`] = value;
     }
   }
+// ObjectId vs custom id —  handle all
+  const filter = Types.ObjectId.isValid(id)
+    ? { _id: id }
+    : { id: id };
 
-  const result = await Alumni.findOneAndUpdate({ id }, modifiedData, {
-    new: true,
-    runValidators: true,
-  });
+const result = await Alumni.findByIdAndUpdate(
+    id,
+    modifiedData,
+    { new: true, runValidators: true },
+  );
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Alumni not found');
+  }
+if (result?.profilePicture) {
+  result.profilePicture = getCloudinaryUrl(result.profilePicture);
+}
 
   return result;
+
+  
 };
 
 const deleteAlumniFromDB = async (id: string) => {

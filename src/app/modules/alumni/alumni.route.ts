@@ -5,6 +5,7 @@ import { USER_ROLE } from '../user/user.constant';
 
 import { AlumniValidation } from './alumni.validation';
 import { AlumniControllers } from './alumni.controller';
+import { upload } from '../../utils/sendImageToCloudinary';
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.get('/:id', AlumniControllers.getSingleAlumni);
 router.patch(
   '/:id',
   auth(USER_ROLE.alumni, USER_ROLE.admin),
+  upload.single('profilePicture'),
   validateRequest(AlumniValidation.updateAlumniValidationSchema),
   AlumniControllers.updateAlumni,
 );

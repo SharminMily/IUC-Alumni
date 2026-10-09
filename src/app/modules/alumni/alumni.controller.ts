@@ -27,8 +27,20 @@ const getSingleAlumni = catchAsync(async (req, res) => {
 });
 
 const updateAlumni = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await AlumniServices.updateAlumniIntoDB(id, req.body);
+  // console.log('PARAMS ID:', req.params.id);
+  // console.log('FILE:', req.file);
+  // console.log('BODY:', req.body);
+
+  const payload = { ...req.body }
+  // Image upload then URL set 
+if (req.file) {
+  const fullPublicId = req.file.filename;
+  const shortId = fullPublicId.split('/').pop();
+  // payload.profilePicture = shortId;
+  payload.profilePicture = `https://${shortId}`;
+}
+
+  const result = await AlumniServices.updateAlumniIntoDB(req.params.id, payload)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
