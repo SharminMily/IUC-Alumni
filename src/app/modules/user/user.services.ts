@@ -155,7 +155,7 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
   }
 };
 
-// ====================== Create Alumni ======================
+// ========  Create Alumni =========
 const createAlumniIntoDB = async (password: string, payload: TAlumni) => {
   const userData: Partial<TUser> = {};
 
@@ -199,7 +199,7 @@ const createAlumniIntoDB = async (password: string, payload: TAlumni) => {
     throw new Error(err);
   }
 };
-// ====================== Get Me ======================
+// ========= Get Me ==========
 const getMe = async (userId: string, role: string) => {
   let result = null;
 
@@ -219,7 +219,7 @@ const getMe = async (userId: string, role: string) => {
   return result;
 };
 
-// ====================== Change Status ======================
+// ======== Change Status ===========
 const changeStatus = async (id: string, payload: { status: string }) => {
   const result = await User.findByIdAndUpdate(id, payload, {
     new: true,

@@ -54,18 +54,6 @@ app.use('/api/v2/notifications', NotificationRoutes);
 app.use('/api/v2/mentorship', MentorshipRoutes);
 // app.use('/api/v1/campaigns', CampaignRoutes);
 
-// const getAController = (req: Request, res: Response) => {
-//   const a = 10;
-
-//   res.json({
-//     success: true,
-//     value: a,
-//   });
-// };
-
-// app.get('/', getAController);
-// app.use('/api', router);
-
 app.use(globalErrorHandler);
 
 app.use(notFound);

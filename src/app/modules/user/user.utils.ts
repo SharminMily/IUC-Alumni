@@ -86,7 +86,7 @@ export const generateAdminId = async () => {
   return incrementId;
 };
 
-// ====================== Alumni ID ======================
+// ======= Alumni ID =========
 export const findLastAlumniId = async () => {
   const lastAlumni = await User.findOne(
     { role: 'alumni' },
